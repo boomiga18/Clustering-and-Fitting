@@ -1,7 +1,10 @@
-corner
-matplotlib
-numpy
 pandas
-scikit-learn
-scipy
+numpy
+matplotlib
 seaborn
+scipy
+scikit-learn
+jupyter
+notebook
+ipykernel
+tqdm
