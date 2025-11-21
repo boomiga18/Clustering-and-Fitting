@@ -209,7 +209,7 @@ def main():
     fitting_results = perform_fitting(df, 'xG', 'Gls')
     plot_fitted_data(*fitting_results)
 
-    print("\nFinished. All outputs successfully generated.")
+    print("\n✅ Finished. All outputs successfully generated.")
     print("--------------------------------------------------")
     print("Generated plots: relational_plot.png, categorical_plot.png, "
           "statistical_plot.png, elbow_plot.png, clustering.png, fitting.png")
@@ -218,3 +218,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
