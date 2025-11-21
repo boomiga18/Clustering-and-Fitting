@@ -28,6 +28,7 @@ def plot_relational_plot(df):
     ax.set_title('Relational Plot: Age vs Minutes Played')
     plt.xlabel('Age')
     plt.ylabel('Minutes Played')
+    plt.tight_layout()
     plt.savefig('relational_plot.png')
     plt.close()
     return
@@ -37,10 +38,12 @@ def plot_categorical_plot(df):
     """Bar plot of Top 10 Nations by player count."""
     fig, ax = plt.subplots(figsize=(8, 6))
     top_nations = df['Nation'].value_counts().nlargest(10)
-    sns.barplot(x=top_nations.values, y=top_nations.index, ax=ax, palette='viridis')
+    sns.barplot(x=top_nations.values, y=top_nations.index,
+                ax=ax, hue=None, palette='viridis', legend=False)
     ax.set_title('Top 10 Nations by Player Count')
     plt.xlabel('Number of Players')
     plt.ylabel('Nation')
+    plt.tight_layout()
     plt.savefig('categorical_plot.png')
     plt.close()
     return
@@ -53,6 +56,7 @@ def plot_statistical_plot(df):
     corr = df[cols].corr()
     sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax)
     ax.set_title('Correlation Heatmap')
+    plt.tight_layout()
     plt.savefig('statistical_plot.png')
     plt.close()
     return
@@ -86,6 +90,7 @@ def writing(moments, col):
           f'Standard Deviation = {moments[1]:.2f}, '
           f'Skewness = {moments[2]:.2f}, and '
           f'Excess Kurtosis = {moments[3]:.2f}.')
+
     if moments[2] > 0:
         skewness_type = 'right-skewed'
     elif moments[2] < 0:
@@ -121,6 +126,7 @@ def perform_clustering(df, col1, col2):
         plt.title('Elbow Method for Optimal K')
         plt.xlabel('Number of clusters (K)')
         plt.ylabel('Inertia')
+        plt.tight_layout()
         plt.savefig('elbow_plot.png')
         plt.close()
         return
@@ -133,16 +139,13 @@ def perform_clustering(df, col1, col2):
         _inertia = model.inertia_
         return _score, _inertia
 
-    # Prepare data
     X = df[[col1, col2]].dropna()
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
 
-    # Evaluate and plot
     one_silhouette_inertia(X_scaled)
     plot_elbow_method(X_scaled)
 
-    # Fit final model (K=3)
     kmeans = KMeans(n_clusters=3, random_state=42)
     labels = kmeans.fit_predict(X_scaled)
     centers = kmeans.cluster_centers_
@@ -160,6 +163,7 @@ def plot_clustered_data(labels, data, xkmeans, ykmeans, centre_labels):
     plt.title('K-Means Clustering: Goals vs Assists')
     plt.xlabel('Goals (scaled)')
     plt.ylabel('Assists (scaled)')
+    plt.tight_layout()
     plt.savefig('clustering.png')
     plt.close()
     return
@@ -173,7 +177,7 @@ def perform_fitting(df, col1, col2):
     model.fit(X, y)
     x_range = np.linspace(X.min(), X.max(), 100).reshape(-1, 1)
     y_pred = model.predict(x_range)
-    return (df[[col1, col2]], x_range, y_pred)
+    return df[[col1, col2]], x_range, y_pred
 
 
 def plot_fitted_data(data, x, y):
@@ -184,6 +188,7 @@ def plot_fitted_data(data, x, y):
     plt.title('Linear Regression: Expected Goals vs Goals')
     plt.xlabel('Expected Goals (xG)')
     plt.ylabel('Goals (Gls)')
+    plt.tight_layout()
     plt.savefig('fitting.png')
     plt.close()
     return
@@ -203,7 +208,11 @@ def main():
     plot_clustered_data(*clustering_results)
     fitting_results = perform_fitting(df, 'xG', 'Gls')
     plot_fitted_data(*fitting_results)
-    print("\nAnalysis complete. All plots and results generated successfully.")
+
+    print("\nFinished. All outputs successfully generated.")
+    print("--------------------------------------------------")
+    print("Generated plots: relational_plot.png, categorical_plot.png, "
+          "statistical_plot.png, elbow_plot.png, clustering.png, fitting.png")
     return
 
 
