@@ -195,7 +195,7 @@ def plot_fitted_data(data, x, y):
 
 def main():
     """Main function to execute full analysis workflow."""
-    df = pd.read_csv('Season_2025-2026.csv')
+    df = pd.read_csv('data.csv')
     df = preprocessing(df)
     col = 'Age'
     plot_relational_plot(df)
